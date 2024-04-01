@@ -4,23 +4,14 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class RandProductMaker extends JFrame {
-
-    private JLabel nameLabel;
-    private JLabel descriptionLabel;
-    private JLabel idLabel;
-    private JLabel costLabel;
-    private JLabel recordCountLabel;
-    private JTextField nameTextField;
-    private JTextField descriptionTextField;
-    private JTextField idTextField;
-    private JTextField costTextField;
-    private JTextField recordCountTextField;
-    private JButton addButton;
-    private JButton quitButton;
+    private JLabel nameLabel, descriptionLabel, idLabel, costLabel, recordCountLabel;
+    private JTextField nameTextField, descriptionTextField, idTextField, costTextField, recordCountTextField;
+    private JButton addButton, quitButton;
     private RandomAccessFile productFile;
 
     public RandProductMaker() throws IOException {
         super("Product Data Entry");
+
 
         nameLabel = new JLabel("Product Name:");
         descriptionLabel = new JLabel("Product Description:");
@@ -51,6 +42,7 @@ public class RandProductMaker extends JFrame {
         add(quitButton);
         recordCountTextField.setText("0");
 
+
         addButton.addActionListener(e -> addProduct());
 
         quitButton.addActionListener(e -> {
@@ -62,12 +54,13 @@ public class RandProductMaker extends JFrame {
         setSize(400, 200);
         setVisible(true);
 
+        // Suppress secure coding warning
         System.setProperty("java.awt.headless", "true");
     }
 
     private void addProduct() {
-        if (nameTextField.getText().isEmpty() || descriptionTextField.getText().isEmpty() || idTextField.getText().isEmpty() ||
-                idTextField.getText().isEmpty() || recordCountTextField.getText().isEmpty()) {
+        if (nameTextField.getText().isEmpty() || descriptionTextField.getText().isEmpty() ||
+                idTextField.getText().isEmpty() || costTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter all product data fields.");
             return;
         }
@@ -92,7 +85,6 @@ public class RandProductMaker extends JFrame {
             descriptionTextField.setText("");
             idTextField.setText("");
             costTextField.setText("");
-
         } catch (IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "An error occurred while writing to the file.");
@@ -106,6 +98,34 @@ public class RandProductMaker extends JFrame {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new RandProductMaker();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private static class Product {
+        private String id;
+        private String name;
+        private String description;
+        private double cost;
+
+        public Product(String id, String name, String description, double cost) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.cost = cost;
+        }
+
+        public String getFormattedRandomAccessRecord() {
+            return String.format("%-20s%-20s%-20s%-20s", id, name, description, cost);
         }
     }
 }

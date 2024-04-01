@@ -3,59 +3,31 @@ public class Product {
     private String description;
     private String ID;
     private double cost;
-
-    public Product(String name, String description, String ID, double cost) {
+    public Product(String ID, String name, String description, double cost) {
+        this.ID = ID;
         this.name = name;
         this.description = description;
-        this.ID = ID;
         this.cost = cost;
     }
-
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getID() {
         return ID;
     }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
     public double getCost() {
         return cost;
     }
-
-    public void setCost(double cost) {
-        this.cost = cost;
+    public String toCSVDataRecord() {
+        return ID + "," + name + "," + description + "," + cost;
     }
-
-    public String toCSVDataRecord()
-    {
-        return name + ", " + description + ", " + ID + ", " + cost;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", ID='" + ID + '\'' +
-                ", cost=" + cost +
-                '}';
-
+    public String getFormattedRandomAccessRecord() {
+        String formattedName = String.format("%-35s", name.trim());
+        String formattedDescription = String.format("%-75s", description.trim());
+        String formattedID = String.format("%-6s", ID.trim());
+        return formattedName + formattedDescription + formattedID + String.format("%10.2f", cost);
     }
 }
